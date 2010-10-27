@@ -12,6 +12,14 @@ let loaded_bundler = 1
 let cpoOriginal = &cpo
 set cpo&vim
 
+function! s:SetOptDefault(opt,val)
+  if !exists("g:".a:opt)
+    let g:{a:opt} = a:val
+  endif
+endfunction
+
+call s:SetOptDefault("bundler_commandline_options","--no-color")
+
 augroup bundlerPlugin
   autocmd!
   autocmd QuickfixCmdPost make* call bundler#ConvertErrorMessages()

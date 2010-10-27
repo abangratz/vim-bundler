@@ -19,6 +19,19 @@ that are part of Git repositories).
 :Bundle [args]          Run an arbitrary bundler command. Similar to 
                         :!bundle [args] but chdir to the project tree first.
 
+GLOBAL SETTINGS                                 *bundler-global-settings*
+
+The only global setting supported now is the arguments for the !bundle
+command.
+
+                                                *g:bundler_commandline_options*
+>
+        let g:bundler_commandline_options=""
+This option controls which commandline switches are used when calling the
+bundler command. The default is '--no-color' to remove erroneous quickfix list
+parsing.
+|g:bundler_commandline_options|
+
 MAPPINGS                                        *bundler-mappings*
 
 ABOUT                                           *bundler-about*

@@ -9,8 +9,9 @@
 function bundler#ErrorFormatFor(subCmd)
   let subCmd = a:subCmd
   let errorFormats = {}
-  let errorFormats['check'] = "  * %m (%s)"
-  let errorFormats['install'] = "Could not find gem '%m (%t, %s)' in any of the gem sources."
+  let errorFormats['show'] = "  * %m (%s),Install missing gems with `bundle install`"
+  let errorFormats['check'] = "  * %m (%s),Install missing gems with `bundle install`"
+  let errorFormats['install'] = "Could not find gem '%m (%s)' in any of the gem sources."
   let errorFormats['help'] = ""
   return errorFormats[subCmd]
 endfunction
@@ -23,7 +24,7 @@ function bundler#Execute(subCmd)
   try
     let &l:makeprg = 'bundle'
     let &l:errorformat = bundler#ErrorFormatFor(subCmd)
-    exec 'make '.subCmd
+    exec 'make '.subCmd.' '.g:bundler_commandline_options
     copen
   finally
     let &l:errorformat = errorformatOriginal
@@ -61,7 +62,7 @@ function bundler#AutoCompleteSubcommands(ArgLead, CmdLine, CursorPos)
     if v:shell_error != 0
       return []
     endif
-    call map(lines, 'matchstr(v:val, "  bundle\\s\\+\\zs\\S*")')
+    call map(lines, 'matchstr(v:val, "\\s\\+bundle\\s\\+\\zs\\w*")')
     call filter(lines, 'v:val != ""')
     let g:bundlerSubcommands = lines
   endif
